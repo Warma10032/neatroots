@@ -357,6 +357,14 @@ function readMethod(owner: Record<string, unknown>, name: string): unknown {
   return owner[name];
 }
 
+/**
+ * Wrap one provider method so every call is steered and recorded.
+ *
+ * The method is read from the object itself (own property, then its prototype
+ * chain) instead of from a wrapper layer, so a client that instruments its
+ * methods on read - like the neatlogs SDK client - is wrapped exactly once
+ * (#601).
+ */
 function wrapMethod(
   owner: Record<string, unknown> | undefined,
   name: string,
